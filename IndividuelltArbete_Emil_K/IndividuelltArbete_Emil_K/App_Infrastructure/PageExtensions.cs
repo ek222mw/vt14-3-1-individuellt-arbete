@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.UI;
 using IndividuelltArbete_Emil_K.Model;
 
-namespace IndividuelltArbete_Emil_K.App_Infrastructure
+namespace IndividuelltArbete_Emil_K.Pages
 {
     public static class PageExtensions
     {

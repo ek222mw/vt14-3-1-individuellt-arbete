@@ -15,8 +15,8 @@ namespace IndividuelltArbete_Emil_K.Model
 
         private FormatDAL FormatDAL
         {
-            // Ett TitelDAL-objekt skapas först då det behövs för första 
-            // gången (lazy initialization, http://en.wikipedia.org/wiki/Lazy_initialization).
+            // Ett FormatDAL-objekt skapas först då det behövs för första 
+            // gången.
             get { return _formatDAL ?? (_formatDAL = new FormatDAL()); }
         }
 
@@ -34,7 +34,7 @@ namespace IndividuelltArbete_Emil_K.Model
         /// </summary>
         /// <param name="formatId">Format nummer.</param>
         /// <returns>Ett format-objekt innehållande formatuppgifter.</returns>
-        public Format GetFormat(int formatId)
+        public Formats GetFormat(int formatId)
         {
             return FormatDAL.GetFormatById(formatId);
         }
@@ -43,7 +43,7 @@ namespace IndividuelltArbete_Emil_K.Model
         /// Hämtar alla format som finns lagrade i databasen.
         /// </summary>
         /// <returns>Lista med referenser till format-objekt innehållande formatuppgifter.</returns>
-        public IEnumerable<Format> GetFormats()
+        public IEnumerable<Formats> GetFormats()
         {
             return FormatDAL.GetFormats();
         }
@@ -52,21 +52,8 @@ namespace IndividuelltArbete_Emil_K.Model
         /// Spara ett formats formatuppgifter i databasen.
         /// </summary>
         /// <param name="format">Formatuppgifter som ska sparas.</param>
-        public void SaveFormats(Format format)
+        public void SaveFormats(Formats format)
         {
-            //var validationContext = new ValidationContext(customer);
-            //var validationResults = new List<ValidationResult>();
-            //if (!Validator.TryValidateObject(customer, validationContext, validationResults, true))
-            //{
-            //    // Uppfyller inte objektet affärsreglerna kastas ett undantag med
-            //    // ett allmänt felmeddelande samt en referens till samlingen med
-            //    // resultat av valideringen.
-            //    var ex = new ValidationException("Objektet klarade inte valideringen.");
-            //    ex.Data.Add("ValidationResults", validationResults);
-            //    throw ex;
-            //}
-
-            // Uppfyller inte objektet affärsreglerna...
             ICollection<ValidationResult> validationResults;
             if (!format.Validate(out validationResults)) // Använder "extension method" för valideringen!
             {                                              // Klassen finns under App_Infrastructure.

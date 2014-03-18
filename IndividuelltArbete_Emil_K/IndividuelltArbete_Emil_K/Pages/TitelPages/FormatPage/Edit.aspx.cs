@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -21,7 +22,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.FormatPage
 
         // The id parameter should match the DataKeyNames value set on the control
         // or be decorated with a value provider attribute, e.g. [QueryString]int id
-        public IndividuelltArbete_Emil_K.Model.Format FormatFormView_GetItem([RouteData]int id)
+        public IndividuelltArbete_Emil_K.Model.Formats FormatFormView_GetItem([RouteData]int id)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.FormatPage
                     FormatService.SaveFormats(format);
 
                     Page.SetTempData("SuccessMessage", "Formatet uppdaterades.");
-                    Response.RedirectToRoute("FormatEdit", new { id = format.FormatID });
+                    Response.RedirectToRoute("Format", new { id = format.FormatID });
                     Context.ApplicationInstance.CompleteRequest();
                 }
             }

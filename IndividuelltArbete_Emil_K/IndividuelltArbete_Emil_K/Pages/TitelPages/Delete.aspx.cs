@@ -16,7 +16,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages
             private Service Service
             {
                 // Ett Service-objekt skapas först då det behövs för första 
-                // gången (lazy initialization, http://en.wikipedia.org/wiki/Lazy_initialization).
+                // gången.
                 get { return _service ?? (_service = new Service()); }
             }
 

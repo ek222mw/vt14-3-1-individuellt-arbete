@@ -12,24 +12,23 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
-        public void TitelFormView_InsertItem(Titel titel)
+        public void TitelFormView_InsertItem(Title t)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     Service service = new Service();
-                    service.SaveTitels(titel);
+                    service.SaveTitels(t);
 
                     // Spara (rätt)meddelande och dirigera om klienten till lista med titlar.
                     // (Meddelandet sparas i en "temporär" sessionsvariabel som kapslas 
                     // in av en "extension method" i App_Infrastructure/PageExtensions.)
-                    // Del av designmönstret Post-Redirect-Get (PRG, http://en.wikipedia.org/wiki/Post/Redirect/Get).
+                    // Del av designmönstret Post-Redirect-Get.
                     Page.SetTempData("SuccessMessage", "titeln lades till.");
-                    Response.RedirectToRoute("TitelDetails", new { id = titel.TitelID });
+                    Response.RedirectToRoute("Titel", new { id = t.TitelID });
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception)

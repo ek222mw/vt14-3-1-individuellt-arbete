@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -15,13 +16,13 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages
         private Service Service
         {
             // Ett Service-objekt skapas först då det behövs för första 
-            // gången (lazy initialization, http://en.wikipedia.org/wiki/Lazy_initialization).
+            // gången.
             get { return _service ?? (_service = new Service()); }
         }
 
         // The id parameter should match the DataKeyNames value set on the control
         // or be decorated with a value provider attribute, e.g. [QueryString]int id
-        public IndividuelltArbete_Emil_K.Model.Titel TitelFormView_GetItem([RouteData]int id)
+        public IndividuelltArbete_Emil_K.Model.Title TitelFormView_GetItem([RouteData]int id)
         {
             try
             {
@@ -55,7 +56,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages
                 {
                     Service.SaveTitels(titel);
 
-                    Page.SetTempData("SuccessMessage", "Tekniska infon uppdaterades.");
+                    Page.SetTempData("SuccessMessage", "Titeln uppdaterades.");
                     Response.RedirectToRoute("Titel", new { id = titel.TitelID });
                     Context.ApplicationInstance.CompleteRequest();
                 }

@@ -37,7 +37,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         #region Privata hjälpmetoder
 
         /// <summary>
-        /// Skapar och initierar ett nytt asnlutningsobjekt.
+        /// Skapar och initierar ett nytt anslutningsobjekt.
         /// </summary>
         /// <returns>Referens till ett nytt SqlConnection-objekt</returns>
         private static SqlConnection CreateConnection()
@@ -53,7 +53,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         /// Hämtar alla Format i databasen.
         /// </summary>
         /// <returns>Samling med referenser till Format-objekt.</returns>
-        public static IEnumerable<Format> GetFormats()
+        public static IEnumerable<Formats> GetFormats()
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (var conn = CreateConnection())
@@ -61,11 +61,11 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 try
                 {
                     // Skapar det List-objekt som initialt har plats för 100 referenser till Format-objekt.
-                    var format = new List<Format>(100);
+                    var format = new List<Formats>(100);
 
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    var cmd = new SqlCommand("app.uspGetCustomers", conn);
+                    var cmd = new SqlCommand("app Schema.usp_GetAllFormats", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Öppnar anslutningen till databasen.
@@ -89,7 +89,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                         {
                             // Hämtar ut datat för en post. Använder GetXxx-metoder - vilken beror av typen av data.
                             // Du måste känna till SQL-satsen för att kunna välja rätt GetXxx-metod.
-                            format.Add(new Format
+                            format.Add(new Formats
                             {
                                 FormatID = reader.GetInt32(formatIDIndex),
                                 Format = reader.GetString(formatIndex)
@@ -101,7 +101,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // som inte används.
                     format.TrimExcess();
 
-                    // Returnerar referensen till List-objektet med referenser med Customer-objekt.
+                    // Returnerar referensen till List-objektet med referenser med Format-objekt.
                     return format;
                 }
                 catch
@@ -116,7 +116,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         /// </summary>
         /// <param name="formatid">Ett formats nummer.</param>
         /// <returns>Ett Format-objekt med uppgifter.</returns>
-        public static Format GetFormatById(int formatID)
+        public static Formats GetFormatById(int formatID)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -125,11 +125,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspGetCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_GetFormatByID", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till den paramter den lagrade proceduren kräver. Använder här det MINDRE effektiva 
-                    // sätttet att göra det på - enkelt, men ASP.NET behöver "jobba" rätt mycket.
+                    // Lägger till den paramter den lagrade proceduren kräver.
                     cmd.Parameters.AddWithValue("@FormatID", formatID);
 
                     // Öppnar anslutningen till databasen.
@@ -151,7 +150,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                             int formatIndex = reader.GetOrdinal("Format");
                             
                             // Returnerar referensen till de skapade Format-objektet.
-                            return new Format
+                            return new Formats
                             {
                                 FormatID = reader.GetInt32(formatIDIndex),
                                 Format = reader.GetString(formatIndex)
@@ -175,7 +174,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         /// Skapar en ny post i tabellen Format.
         /// </summary>
         /// <param name="format">Format uppgifter som ska läggas till.</param>
-        public static void InsertFormat(Format format)
+        public static void InsertFormat(Formats format)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -184,11 +183,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspInsertCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_AddFormat", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
-                    // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
+                    // Lägger till de paramterar den lagrade proceduren kräver.
                     cmd.Parameters.Add("@Format", SqlDbType.VarChar, 20).Value = format.Format;
                    
 
@@ -217,21 +215,20 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Uppdaterar en kunds kunduppgifter i tabellen Format.
+        /// Uppdaterar ett formats formatuppgifter i tabellen Format.
         /// </summary>
         /// <param name="format">Format uppgifter som ska uppdateras.</param>
-        public static void UpdateFormat(Format format)
+        public static void UpdateFormat(Formats format)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspUpdateCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_upFormat", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
-                    // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
+                    // Lägger till de paramterar den lagrade proceduren kräver.
                     cmd.Parameters.Add("@FormatID", SqlDbType.Int, 4).Value = format.FormatID;
                     cmd.Parameters.Add("@Format", SqlDbType.VarChar, 20).Value = format.Format;
                     
@@ -261,11 +258,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspDeleteCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_delFormat", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till den paramter den lagrade proceduren kräver. Använder här det effektiva sätttet att
-                    // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
+                    // Lägger till den paramter den lagrade proceduren kräver.
                     cmd.Parameters.Add("@FormatID", SqlDbType.Int, 4).Value = formatID;
 
                     // Öppnar anslutningen till databasen.

@@ -6,10 +6,10 @@ using System.Web;
 
 namespace IndividuelltArbete_Emil_K.Model
 {
-    public class TekniskInfo
+    public class TekniskInfos
     {
         // Egenskapernas namn och typ ges av tabellen
-        // TekniskInfo i databasen.
+        // Teknisk Info i databasen.
 
         public int TekniskInfoID { get; set; }
 

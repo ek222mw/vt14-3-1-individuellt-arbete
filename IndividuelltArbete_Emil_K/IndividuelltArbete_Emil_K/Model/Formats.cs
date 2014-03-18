@@ -6,7 +6,7 @@ using System.Web;
 
 namespace IndividuelltArbete_Emil_K.Model
 {
-    public class Format
+    public class Formats
     {
         // Egenskapernas namn och typ ges av tabellen
         // Format i databasen.

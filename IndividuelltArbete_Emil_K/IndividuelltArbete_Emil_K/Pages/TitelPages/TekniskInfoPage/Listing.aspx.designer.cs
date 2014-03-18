@@ -13,24 +13,6 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage {
     public partial class Listing {
         
         /// <summary>
-        /// HyperLink9 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink9;
-        
-        /// <summary>
-        /// HyperLink3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
-        
-        /// <summary>
         /// SuccessMessagePanel control.
         /// </summary>
         /// <remarks>
@@ -65,6 +47,15 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
+        
+        /// <summary>
+        /// HyperLink3 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
         
         /// <summary>
         /// TekniskInfoListView control.

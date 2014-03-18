@@ -6,16 +6,16 @@ using System.Web;
 
 namespace IndividuelltArbete_Emil_K.Model
 {
-    public class Titel
+    public class Title
     {
         // Egenskapernas namn och typ ges av tabellen
         // Titel i databasen.
 
         public int TitelID { get; set; }
 
-        public int Top10ID { get; set; }
+       // public int Top10ID { get; set; }
 
-        public int BetygID { get; set; }
+      //  public int BetygID { get; set; }
 
         public int TekniskInfoID { get; set; }
 
@@ -27,8 +27,9 @@ namespace IndividuelltArbete_Emil_K.Model
         [StringLength(50, ErrorMessage = "Titeln kan bestå av som mest 50 tecken.")]
         public string Titel { get; set; }
 
+       
+        
         [Required(ErrorMessage = "Ett produktionsår måste anges.")]
-        [RegularExpression(@"^\\d{2}/\\d{2}/\\d{4}$", ErrorMessage = "Datumet verkar inte vara korrekt.")]
         public DateTime Produktionsar { get; set; }
 
         [Required(ErrorMessage = "Ett Produktionsbolag måste anges.")]

@@ -15,7 +15,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage
         private TekniskInfoService TekniskInfoService
         {
             // Ett Service-objekt skapas först då det behövs för första 
-            // gången (lazy initialization, http://en.wikipedia.org/wiki/Lazy_initialization).
+            // gången.
             get { return _tekniskInfoservice ?? (_tekniskInfoservice = new TekniskInfoService()); }
         }
 
@@ -61,7 +61,7 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage
                 TekniskInfoService.DeleteTekniskInfo(id);
 
                 Page.SetTempData("SuccessMessage", "teknisk info togs bort.");
-                Response.RedirectToRoute("Teknisk info", null);
+                Response.RedirectToRoute("TekniskInfo", null);
                 Context.ApplicationInstance.CompleteRequest();
             }
             catch (Exception)

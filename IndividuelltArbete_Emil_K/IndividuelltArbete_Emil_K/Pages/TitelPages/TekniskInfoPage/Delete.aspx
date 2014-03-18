@@ -4,7 +4,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-     <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <h1>
         Ta bort teknisk info
     </h1>
@@ -23,5 +22,4 @@
             OnCommand="DeleteLinkButton_Command" CommandArgument='<%$ RouteValue:id %>' />
         <asp:HyperLink runat="server" ID="CancelHyperLink" Text="Avbryt" />
     </div>
-</asp:Content>
 </asp:Content>

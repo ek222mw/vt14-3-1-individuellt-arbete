@@ -12,24 +12,23 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
         }
 
-        public void TekniskInfoFormView_InsertItem(TekniskInfo tekniskInfo)
+        public void TekniskInfoFormView_InsertItem(TekniskInfos tek)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     TekniskInfoService service = new TekniskInfoService();
-                    service.SaveTekniskInfos(tekniskInfo);
+                    service.SaveTekniskInfos(tek);
 
                     // Spara (rätt)meddelande och dirigera om klienten till lista med titlar.
                     // (Meddelandet sparas i en "temporär" sessionsvariabel som kapslas 
                     // in av en "extension method" i App_Infrastructure/PageExtensions.)
-                    // Del av designmönstret Post-Redirect-Get (PRG, http://en.wikipedia.org/wiki/Post/Redirect/Get).
-                    Page.SetTempData("SuccessMessage", "titeln lades till.");
-                    Response.RedirectToRoute("TekniskInfo", new { id = tekniskInfo.TekniskInfoID });
+                    // Del av designmönstret Post-Redirect-Get.
+                    Page.SetTempData("SuccessMessage", "tekniskinfo lades till.");
+                    Response.RedirectToRoute("TekniskInfo", new { id = tek.TekniskInfoID });
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception)

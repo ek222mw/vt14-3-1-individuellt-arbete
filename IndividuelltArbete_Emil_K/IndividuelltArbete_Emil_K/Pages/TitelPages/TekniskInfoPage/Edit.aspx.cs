@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.ModelBinding;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -15,13 +16,13 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.TekniskInfoPage
         private TekniskInfoService TekniskInfoService
         {
             // Ett Service-objekt skapas först då det behövs för första 
-            // gången (lazy initialization, http://en.wikipedia.org/wiki/Lazy_initialization).
+            // gången.
             get { return _tekniskinfoservice ?? (_tekniskinfoservice = new TekniskInfoService()); }
         }
 
         // The id parameter should match the DataKeyNames value set on the control
         // or be decorated with a value provider attribute, e.g. [QueryString]int id
-        public IndividuelltArbete_Emil_K.Model.TekniskInfo TekniskInfoFormView_GetItem([RouteData]int id)
+        public IndividuelltArbete_Emil_K.Model.TekniskInfos TekniskInfoFormView_GetItem([RouteData]int id)
         {
             try
             {

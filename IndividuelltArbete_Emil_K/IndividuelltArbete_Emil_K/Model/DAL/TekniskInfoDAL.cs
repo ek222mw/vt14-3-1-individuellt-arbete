@@ -52,20 +52,20 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         /// <summary>
         /// Hämtar all Tekniskinfo i databasen.
         /// </summary>
-        /// <returns>Samling med referenser till Customer-objekt.</returns>
-        public static IEnumerable<TekniskInfo> GetTekniskInfos()
+        /// <returns>Samling med referenser till TekniskInfo-objekt.</returns>
+        public static IEnumerable<TekniskInfos> GetTekniskInfos()
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (var conn = CreateConnection())
             {
                 try
                 {
-                    // Skapar det List-objekt som initialt har plats för 100 referenser till Customer-objekt.
-                    var tekniskinfo = new List<TekniskInfo>(100);
+                    // Skapar det List-objekt som initialt har plats för 100 referenser till TekniskInfo-objekt.
+                    var tekniskinfo = new List<TekniskInfos>(100);
 
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    var cmd = new SqlCommand("app.uspGetCustomers", conn);
+                    var cmd = new SqlCommand("app Schema.usp_GetAllTekniskInfos", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Öppnar anslutningen till databasen.
@@ -89,7 +89,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                         {
                             // Hämtar ut datat för en post. Använder GetXxx-metoder - vilken beror av typen av data.
                             // Du måste känna till SQL-satsen för att kunna välja rätt GetXxx-metod.
-                            tekniskinfo.Add(new TekniskInfo
+                            tekniskinfo.Add(new TekniskInfos
                             {
                                 TekniskInfoID = reader.GetInt32(tekniskInfoIDIndex),
                                 FormatID = reader.GetInt32(formatIDIndex),
@@ -103,7 +103,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // som inte används.
                     tekniskinfo.TrimExcess();
 
-                    // Returnerar referensen till List-objektet med referenser med Customer-objekt.
+                    // Returnerar referensen till List-objektet med referenser med TekniskInfo-objekt.
                     return tekniskinfo;
                 }
                 catch
@@ -114,11 +114,11 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Hämtar en kunds kunduppgifter.
+        /// Hämtar en teknisk info uppgifter.
         /// </summary>
-        /// <param name="customerId">En kunds kundnummer.</param>
-        /// <returns>Ett Customer-objekt med en kunds kunduppgifter.</returns>
-        public static TekniskInfo GetTekniskInfoById(int tekniskInfoID)
+        /// <param name="tekniskInfoId">En teknisk info nummer.</param>
+        /// <returns>Ett TekniskInfo-objekt med en teknisk info uppgifter.</returns>
+        public static TekniskInfos GetTekniskInfoById(int tekniskInfoID)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -127,7 +127,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspGetCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_GetTekniskInfoByID", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till den paramter den lagrade proceduren kräver. Använder här det MINDRE effektiva 
@@ -153,8 +153,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                             int formatIDIndex = reader.GetOrdinal("FormatID");
                             int tekniskinfoIndex = reader.GetOrdinal("TekniskInfo");
 
-                            // Returnerar referensen till de skapade Contact-objektet.
-                            return new TekniskInfo
+                            // Returnerar referensen till de skapade TekniskInfo-objektet.
+                            return new TekniskInfos
                             {
                                 TekniskInfoID = reader.GetInt32(tekniskInfoIDIndex),
                                 FormatID = reader.GetInt32(formatIDIndex),
@@ -164,10 +164,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                         }
                     }
 
-                    // Istället för att returnera null kan du välja att kasta ett undatag om du 
-                    // inte får "träff" på en tekniskinfo. I denna applikation väljer jag att *inte* betrakta 
-                    // det som ett fel i detta lager om det inte går att hitta en titel. Vad du väljer 
-                    // är en smaksak...
+                    // Istället för att returnera null kan du välja att kasta ett undantag om du 
+                    // inte får "träff" på en tekniskinfo.
                     return null;
                 }
                 catch
@@ -181,8 +179,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         /// <summary>
         /// Skapar en ny post i tabellen Teknisk info.
         /// </summary>
-        /// <param name="customer">TekniskInfouppgifter som ska läggas till.</param>
-        public static void InsertTekniskInfo(TekniskInfo tekniskInfo)
+        /// <param name="tekniskInfo">Teknisk info uppgifter som ska läggas till.</param>
+        public static void InsertTekniskInfo(TekniskInfos tekniskInfo)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -191,20 +189,19 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspInsertCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_AddTekniskInfo", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
                     // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
                     cmd.Parameters.Add("@TekniskInfo", SqlDbType.VarChar, 600).Value = tekniskInfo.TekniskInfo;
-                   
+                    cmd.Parameters.Add("@FormatID", SqlDbType.Int, 4).Value = tekniskInfo.FormatID;
 
                     // Den här parametern är lite speciell. Den skickar inte något data till den lagrade proceduren,
                     // utan hämtar data från den. (Fungerar ungerfär som ref- och out-prameterar i C#.) Värdet 
                     // parametern kommer att ha EFTER att den lagrade proceduren exekverats är primärnycklens värde
                     // den nya posten blivit tilldelad av databasen.
                     cmd.Parameters.Add("@TekniskInfoID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("@FormatID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
 
                     // Öppnar anslutningen till databasen.
                     conn.Open();
@@ -213,9 +210,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // ExecuteNonQuery används för att exekvera den lagrade proceduren.
                     cmd.ExecuteNonQuery();
 
-                    // Hämtar primärnyckelns värde för den nya posten och tilldelar Customer-objektet värdet.
+                    // Hämtar primärnyckelns värde för den nya posten och tilldelar TekniskInfo-objektet värdet.
                     tekniskInfo.TekniskInfoID = (int)cmd.Parameters["@TekniskInfoID"].Value;
-                    tekniskInfo.FormatID = (int)cmd.Parameters["@FormatID"].Value;
                 }
                 catch
                 {
@@ -226,17 +222,17 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Uppdaterar en kunds kunduppgifter i tabellen Customer.
+        /// Uppdaterar en teknisk info uppgifter i tabellen Teknisk Info.
         /// </summary>
-        /// <param name="customer">Kunduppgifter som ska uppdateras.</param>
-        public static void UpdateTekniskInfo(TekniskInfo tekniskInfo)
+        /// <param name="tekniskInfo">Teknisk info uppgifter som ska uppdateras.</param>
+        public static void UpdateTekniskInfo(TekniskInfos tekniskInfo)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspUpdateCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_upTekniskInfo", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
@@ -271,11 +267,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspDeleteCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_delTekniskInfo", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till den paramter den lagrade proceduren kräver. Använder här det effektiva sätttet att
-                    // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
+                    // Lägger till den paramter den lagrade proceduren kräver.
                     cmd.Parameters.Add("@TekniskInfoID", SqlDbType.Int, 4).Value = tekniskInfoID;
 
                     // Öppnar anslutningen till databasen.

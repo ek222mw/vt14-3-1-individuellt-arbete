@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace IndividuelltArbete_Emil_K.App_Infrastructure
+namespace IndividuelltArbete_Emil_K.Model
 {
     public static class ValidationExtension
     {

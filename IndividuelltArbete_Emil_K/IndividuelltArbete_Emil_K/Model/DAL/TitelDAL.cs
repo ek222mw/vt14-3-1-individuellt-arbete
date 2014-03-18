@@ -37,7 +37,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         #region Privata hjälpmetoder
 
         /// <summary>
-        /// Skapar och initierar ett nytt asnlutningsobjekt.
+        /// Skapar och initierar ett nytt anslutningsobjekt.
         /// </summary>
         /// <returns>Referens till ett nytt SqlConnection-objekt</returns>
         private static SqlConnection CreateConnection()
@@ -50,22 +50,22 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         #region CRUD-metoder
 
         /// <summary>
-        /// Hämtar alla kunder i databasen.
+        /// Hämtar alla Titlar i databasen.
         /// </summary>
-        /// <returns>Samling med referenser till Customer-objekt.</returns>
-        public static IEnumerable<Titel> GetTitels()
+        /// <returns>Samling med referenser till Titel-objekt.</returns>
+        public static IEnumerable<Title> GetTitels()
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (var conn = CreateConnection())
             {
                 try
                 {
-                    // Skapar det List-objekt som initialt har plats för 100 referenser till Customer-objekt.
-                    var titels = new List<Titel>(100);
+                    // Skapar det List-objekt som initialt har plats för 100 referenser till Titel-objekt.
+                    var titels = new List<Title>(100);
 
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    var cmd = new SqlCommand("app.uspGetCustomers", conn);
+                    var cmd = new SqlCommand("app Schema.usp_GetAllTitels", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Öppnar anslutningen till databasen.
@@ -93,7 +93,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                         {
                             // Hämtar ut datat för en post. Använder GetXxx-metoder - vilken beror av typen av data.
                             // Du måste känna till SQL-satsen för att kunna välja rätt GetXxx-metod.
-                            titels.Add(new Titel
+                            titels.Add(new Title
                             {
                                 TitelID = reader.GetInt32(titelIDIndex),
                                 TekniskInfoID = reader.GetInt32(tekniskInfoIDIndex),
@@ -110,7 +110,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // som inte används.
                     titels.TrimExcess();
 
-                    // Returnerar referensen till List-objektet med referenser med Customer-objekt.
+                    // Returnerar referensen till List-objektet med referenser till Titel-objekt.
                     return titels;
                 }
                 catch
@@ -121,11 +121,11 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Hämtar en kunds kunduppgifter.
+        /// Hämtar en titels titel uppgifter.
         /// </summary>
-        /// <param name="customerId">En kunds kundnummer.</param>
-        /// <returns>Ett Customer-objekt med en kunds kunduppgifter.</returns>
-        public static Titel GetTitelsById(int titelID)
+        /// <param name="titelId">En Titels titelnummer.</param>
+        /// <returns>Ett Titel-objekt med en titels titeluppgifter.</returns>
+        public static Title GetTitelsById(int titelID)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -134,11 +134,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspGetCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_GetTitelByID", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    // Lägger till den paramter den lagrade proceduren kräver. Använder här det MINDRE effektiva 
-                    // sätttet att göra det på - enkelt, men ASP.NET behöver "jobba" rätt mycket.
+                    // Lägger till den paramter den lagrade proceduren kräver.
                     cmd.Parameters.AddWithValue("@TitelID", titelID);
 
                     // Öppnar anslutningen till databasen.
@@ -165,15 +164,15 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                             int GenreIndex = reader.GetOrdinal("Genre");
 
 
-                            // Returnerar referensen till de skapade Contact-objektet.
-                            return new Titel
+                            // Returnerar referensen till de skapade Titel-objektet.
+                            return new Title
                             {
                                 TitelID = reader.GetInt32(titelIDIndex),
                                 TekniskInfoID = reader.GetInt32(tekniskInfoIndex),
                                 Beskrivning = reader.GetString(beskrivningIndex),
                                 Titel = reader.GetString(titelIndex),
                                 Produktionsar = reader.GetDateTime(produktionsarIndex),
-                                Produktionsbolag = reader.GetString(produktionsarIndex),
+                                Produktionsbolag = reader.GetString(produktionsbolagIndex),
                                 Genre = reader.GetString(GenreIndex)
 
                             };
@@ -181,9 +180,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     }
 
                     // Istället för att returnera null kan du välja att kasta ett undatag om du 
-                    // inte får "träff" på en titel. I denna applikation väljer jag att *inte* betrakta 
-                    // det som ett fel i detta lager om det inte går att hitta en titel. Vad du väljer 
-                    // är en smaksak...
+                    // inte får "träff" på en titel.
                     return null;
                 }
                 catch
@@ -195,10 +192,10 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Skapar en ny post i tabellen Customer.
+        /// Skapar en ny post i tabellen Titel.
         /// </summary>
-        /// <param name="customer">Kunduppgifter som ska läggas till.</param>
-        public static void InsertTitel(Titel titel)
+        /// <param name="titel">Titeluppgifter som ska läggas till.</param>
+        public static void InsertTitel(Title titel)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
@@ -207,14 +204,15 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                 {
                     // Skapar och initierar ett SqlCommand-objekt som används till att 
                     // exekveras specifierad lagrad procedur.
-                    SqlCommand cmd = new SqlCommand("app.uspInsertCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_AddTitel", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
                     // göra det på - något "svårare" men ASP.NET behöver inte "jobba" så mycket.
+                    cmd.Parameters.Add("@TekniskInfoID", SqlDbType.Int, 4).Value = titel.TekniskInfoID;
                     cmd.Parameters.Add("@Beskrivning", SqlDbType.VarChar, 1000).Value = titel.Beskrivning;
                     cmd.Parameters.Add("@Titel", SqlDbType.VarChar, 50).Value = titel.Titel;
-                    cmd.Parameters.Add("@Produktionsår", SqlDbType.DateTime, 10).Value = titel.Produktionsar;
+                    cmd.Parameters.Add("@Produktionsar", SqlDbType.DateTime, 10).Value = titel.Produktionsar;
                     cmd.Parameters.Add("@Produktionsbolag", SqlDbType.VarChar, 40).Value = titel.Produktionsbolag;
                     cmd.Parameters.Add("@Genre", SqlDbType.VarChar, 20).Value = titel.Genre;
 
@@ -223,8 +221,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // parametern kommer att ha EFTER att den lagrade proceduren exekverats är primärnycklens värde
                     // den nya posten blivit tilldelad av databasen.
                     cmd.Parameters.Add("@TitelID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("@TekniskInfoID", SqlDbType.Int, 4).Direction = ParameterDirection.Output;
-
+                   
                     // Öppnar anslutningen till databasen.
                     conn.Open();
 
@@ -232,9 +229,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     // ExecuteNonQuery används för att exekvera den lagrade proceduren.
                     cmd.ExecuteNonQuery();
 
-                    // Hämtar primärnyckelns värde för den nya posten och tilldelar Customer-objektet värdet.
+                    // Hämtar primärnyckelns värde för den nya posten och tilldelar Titel-objektet värdet.
                     titel.TitelID = (int)cmd.Parameters["@TitelID"].Value;
-                    titel.TekniskInfoID = (int)cmd.Parameters["@TekniskInfoID"].Value;
                 }
                 catch
                 {
@@ -245,17 +241,17 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Uppdaterar en kunds kunduppgifter i tabellen Customer.
+        /// Uppdaterar en titels titeluppgifter i tabellen Titel.
         /// </summary>
-        /// <param name="customer">Kunduppgifter som ska uppdateras.</param>
-        public static void UpdateTitel(Titel titel)
+        /// <param name="titel">Titeluppgifter som ska uppdateras.</param>
+        public static void UpdateTitel(Title titel)
         {
             // Skapar och initierar ett anslutningsobjekt.
             using (SqlConnection conn = CreateConnection())
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspUpdateCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_upTitel", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till de paramterar den lagrade proceduren kräver. Använder här det effektiva sätttet att
@@ -263,8 +259,8 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
                     cmd.Parameters.Add("@TitelID", SqlDbType.Int, 4).Value = titel.TitelID;
                     cmd.Parameters.Add("@TekniskInfoID", SqlDbType.Int, 4).Value = titel.TekniskInfoID;
                     cmd.Parameters.Add("@Beskrivning", SqlDbType.VarChar, 1000).Value = titel.Beskrivning;
-                    cmd.Parameters.Add("@Titel", SqlDbType.VarChar, 50).Value = titel.TitelID;
-                    cmd.Parameters.Add("@Produktionsår", SqlDbType.DateTime, 10).Value = titel.Produktionsar;
+                    cmd.Parameters.Add("@Titel", SqlDbType.VarChar, 50).Value = titel.Titel;
+                    cmd.Parameters.Add("@Produktionsar", SqlDbType.DateTime, 10).Value = titel.Produktionsar;
                     cmd.Parameters.Add("@Produktionsbolag", SqlDbType.VarChar, 40).Value = titel.Produktionsbolag;
                     cmd.Parameters.Add("@Genre", SqlDbType.VarChar, 20).Value = titel.Genre;
 
@@ -284,9 +280,9 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
         }
 
         /// <summary>
-        /// Tar bort en kunds kunduppgifter.
+        /// Tar bort en titels titeluppgifter.
         /// </summary>
-        /// <param name="customerId">Kunds kundnummer.</param>
+        /// <param name="titelId">titels titelnummer.</param>
         public static void DeleteTitel(int titelID)
         {
             // Skapar och initierar ett anslutningsobjekt.
@@ -294,7 +290,7 @@ namespace IndividuelltArbete_Emil_K.Model.DAL
             {
                 try
                 {
-                    SqlCommand cmd = new SqlCommand("app.uspDeleteCustomer", conn);
+                    SqlCommand cmd = new SqlCommand("app Schema.usp_delTitel", conn);
                     cmd.CommandType = CommandType.StoredProcedure;
 
                     // Lägger till den paramter den lagrade proceduren kräver. Använder här det effektiva sätttet att

@@ -15,19 +15,19 @@ namespace IndividuelltArbete_Emil_K.Pages.TitelPages.FormatPage
 
         }
 
-        public void FormatFormView_InsertItem(Format format)
+        public void FormatFormView_InsertItem(Formats f)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     FormatService service = new FormatService();
-                    service.SaveFormats(format);
+                    service.SaveFormats(f);
 
                     // Spara (rätt)meddelande och dirigera om klienten till lista med format.
                     // (Meddelandet sparas i en "temporär" sessionsvariabel som kapslas in.
                     Page.SetTempData("SuccessMessage", "format lades till.");
-                    Response.RedirectToRoute("FormatCreate", new { id = format.FormatID });
+                    Response.RedirectToRoute("Format", new { id = f.FormatID });
                     Context.ApplicationInstance.CompleteRequest();
                 }
                 catch (Exception)

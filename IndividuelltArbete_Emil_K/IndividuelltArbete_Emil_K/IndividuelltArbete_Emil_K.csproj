@@ -203,9 +203,9 @@
     <Content Include="Images\orderedList8.png" />
     <Content Include="Images\orderedList9.png" />
     <Content Include="packages.config" />
-    <Content Include="Pages\Shared\Site.Master" />
-    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Pages\Shared\Error.aspx" />
+    <None Include="Properties\PublishProfiles\ek222mw_projekt.pubxml" />
+    <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Pages\TitelPages\Create.aspx" />
     <Content Include="Pages\TitelPages\Delete.aspx" />
     <Content Include="Pages\TitelPages\Edit.aspx" />
@@ -323,25 +323,18 @@
     <Compile Include="Model\DAL\FormatDAL.cs" />
     <Compile Include="Model\DAL\TekniskInfoDAL.cs" />
     <Compile Include="Model\DAL\TitelDAL.cs" />
-    <Compile Include="Model\Format.cs" />
+    <Compile Include="Model\Formats.cs" />
     <Compile Include="Model\FormatService.cs" />
     <Compile Include="Model\Service.cs" />
-    <Compile Include="Model\TekniskInfo.cs" />
+    <Compile Include="Model\TekniskInfos.cs" />
     <Compile Include="Model\TekniskInfoService.cs" />
-    <Compile Include="Model\Titel.cs" />
+    <Compile Include="Model\Title.cs" />
     <Compile Include="Pages\Shared\Error.aspx.cs">
       <DependentUpon>Error.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Pages\Shared\Error.aspx.designer.cs">
       <DependentUpon>Error.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Pages\Shared\Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Pages\Shared\Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
     </Compile>
     <Compile Include="Pages\TitelPages\Create.aspx.cs">
       <DependentUpon>Create.aspx</DependentUpon>

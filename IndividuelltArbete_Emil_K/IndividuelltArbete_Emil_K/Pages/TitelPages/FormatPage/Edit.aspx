@@ -4,7 +4,6 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-     <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <h1>
         Redigera format
     </h1>
@@ -13,7 +12,7 @@
             </div>
     <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="validation-summary-errors" />
     <asp:FormView ID="FormatFormView" runat="server"
-        ItemType="IndividuelltArbete_Emil_K.Model.Format"
+        ItemType="IndividuelltArbete_Emil_K.Model.Formats"
         DataKeyNames="FormatID"
         DefaultMode="Edit"
         RenderOuterTable="false"
@@ -25,6 +24,7 @@
             </div>
             <div class="editor-field">
                 <asp:TextBox ID="FormatTextBox" runat="server" Text='<%# BindItem.Format %>' />
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Fältet tomt, ange ett format" ControlToValidate="FormatTextBox"></asp:RequiredFieldValidator>
             </div>
             <div>
                 <asp:LinkButton ID="LinkButton1" runat="server" Text="Spara" CommandName="Update" />
@@ -32,5 +32,4 @@
             </div>
         </EditItemTemplate>
     </asp:FormView>
-</asp:Content>
 </asp:Content>

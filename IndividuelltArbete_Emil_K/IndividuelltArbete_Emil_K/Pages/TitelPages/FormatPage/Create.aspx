@@ -4,25 +4,25 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="FeaturedContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content3" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:Content ID="Content4" ContentPlaceHolderID="MainContentPlaceHolder" runat="server">
     <h1>
         Nytt Format
     </h1>
-         <div class="editor-field">
+         <div class="create-field">
                 <asp:HyperLink ID="HyperLink10" runat="server" NavigateUrl='<%$ RouteUrl:routename=Format %>' Text="Återgå till formatlistan" />
             </div>
     <asp:ValidationSummary ID="ValidationSummary1" runat="server" CssClass="validation-summary-errors" />
     <asp:FormView ID="FormatFormView" runat="server"
-        ItemType="IndividuelltArbete_Emil_K.Model.Format"
+        ItemType="IndividuelltArbete_Emil_K.Model.Formats"
         DefaultMode="Insert"
         RenderOuterTable="false"
         InsertMethod="FormatFormView_InsertItem">
         <InsertItemTemplate>
-            <div class="editor-label">
+            <div class="create-label">
                 <label for="Format">Format</label>
             </div>
-            <div class="editor-field">
+            <div class="create-field">
                 <asp:TextBox ID="FormatTextBox" runat="server" Text='<%# BindItem.Format %>' />
+                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="Fältet tomt, ange ett format" ControlToValidate="FormatTextBox"></asp:RequiredFieldValidator>
             </div>
             <div>
                 <asp:LinkButton ID="LinkButton1" runat="server" Text="Lägg till" CommandName="Insert" />
@@ -30,5 +30,4 @@
             </div>
         </InsertItemTemplate>
     </asp:FormView>
-</asp:Content>
 </asp:Content>
